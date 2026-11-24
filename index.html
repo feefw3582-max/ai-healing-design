@@ -125,6 +125,19 @@
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
   .reveal.in{opacity:1;transform:none}
 
+
+  /* grid4 */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 0}
+  .grid4 .cell{margin:0;background:#fff;border:1px solid var(--line)}
+  .grid4 img{width:100%;aspect-ratio:1/1.18;object-fit:cover;display:block}
+  .grid4 figcaption{font-size:11px;padding:9px 10px;color:var(--ink-2);line-height:1.5;border-top:1px solid var(--line)}
+  .capnote{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.6}
+  figure.wide{margin:30px 0 8px}
+  figure.wide img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border:1px solid var(--line)}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+  .duo figure{margin:0}
+  .duo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border:1px solid var(--line)}
+  .duo figcaption{font-size:11.5px;color:var(--ink-3);margin-top:9px;line-height:1.6}
   @media(max-width:900px){
     .container{padding:0 22px}
     nav{top:12px;gap:12px;font-size:11px;padding:8px 10px 8px 14px;max-width:calc(100vw - 24px);overflow-x:auto}
@@ -145,7 +158,7 @@
   <div class="logo">疗愈<span>·</span>数字设计</div>
   <div class="sep"></div>
   <a href="#bg">背景</a>
-  <a href="#theory">理论</a>
+  
   <a href="#position">定位</a>
   <a href="#system">系统</a>
   <a href="#hatch">孵化</a>
@@ -159,19 +172,6 @@
   <h1>基于 AI 的<em>疗愈</em>数字设计</h1>
   <p class="lede">一枚握在手里的蛋，用七天时间读出你的握持与节律，由生成模型据此长出一只宠物。它先住在手机里的一座小岛上，之后可以被打印成实体，寄到你家里。</p>
   <div class="byline">Industrial Design · Beijing University of Technology</div>
-
-  <div class="abstract">
-    <div>
-      <h4>摘要</h4>
-      <p>本文以高压中青年人群的情绪调节为切入点，提出一种以蛋形实体为感知入口、以生成式模型为形象决策者、以虚拟岛屿为日常陪伴场所、以三维打印为物质回流的疗愈数字设计。设计主张在于把宠物的选择权从用户手中移出：用户不挑选外形，外形由七天的握持行为与节律数据决定，模型生成候选、系统择一，使宠物成为行为的沉积而非消费的对象。研究以十二名被试的七日孵化实验，结合积极情感量表、孤独量表与半结构访谈，检验该机制能否在七天内形成可测量的情感投入。<sup class="ref">[1]</sup></p>
-      <p class="kw"><b>关键词</b>　情感疗愈 · 生成式设计 · 具身交互 · 慢科技 · 数字陪伴</p>
-    </div>
-    <div>
-      <h4>Abstract</h4>
-      <p class="en">This project proposes a healing-oriented digital design for young professionals under sustained stress. An egg-shaped physical object serves as the sensing interface; a generative model decides the appearance of the companion creature rather than the user; a virtual island hosts daily interaction; and 3D printing returns the creature to the physical world. The central proposition is a transfer of authorship: appearance is deposited by seven days of holding behaviour, not chosen from a catalogue. A seven-day incubation study with twelve participants, combining PANAS, the UCLA Loneliness Scale and semi-structured interviews, examines whether measurable attachment can form within one week.</p>
-      <p class="kw"><b>Keywords</b>　emotional healing · generative design · embodied interaction · slow technology · digital companionship</p>
-    </div>
-  </div>
 </header>
 
 <!-- ============ 01 背景 ============ -->
@@ -184,14 +184,17 @@
     </div>
   </div>
 
-  <h3><span class="num">1.1</span>压力被分摊到每一天</h3>
-  <p class="body">世界卫生组织在 ICD-11 中把职业倦怠列为一种职业现象，其三个维度是精力耗竭、心理距离增加与效能感下降。<sup class="ref">[13]</sup> 对刚进入大学高年级与职场前五年的人而言，这三种状态往往同时出现，并且没有明确的起点与终点。压力不再表现为某个事件，而表现为一天里反复出现的几段空白：会议之间的十分钟、通勤的四十分钟、睡前关灯之后。</p>
+  <p class="body">解压玩具提供了一个真实的握持物，但捏过之后什么也不会留下；情绪应用记录了很多，却要求人先学会描述自己。对一个已经疲惫的人来说，<b>描述自己比承受本身更费力</b>。<sup class="ref">[1]</sup> 于是在"握了但没有记录"与"记录了但不再握"之间，出现了一个空位：既保留真实手感，又不向使用者索取语言。长期得不到释放的职业性耗竭已是普遍现象，而非个别案例。<sup class="ref">[9]</sup></p>
 
-  <h3><span class="num">1.2</span>现有产品在两处断开</h3>
-  <p class="body">市面上的解压玩具提供了真实的手感，但用它的人得不到任何回馈，捏过之后没有任何东西被留下。情绪类应用则相反，它们要求用户主动打开、主动选择情绪标签、主动写下一段话。对于一个已经疲惫的人来说，<b>描述自己比承受本身更费力</b>。Turkle 在讨论模拟陪伴时指出，人们倾向于选择那些对自己提出更低要求的对象。<sup class="ref">[4]</sup> 这一观察解释了为什么大量情绪记录工具在三天内被放弃。</p>
+  <p class="body">市场上的解压产品正在快速扩张。电商平台上的慢回弹捏捏类目已经形成从几元到四十元的完整价格带，头部单品销量以万件计。<sup class="ref">[2]</sup> 这些产品验证了握持需求的存在，也暴露了它们共同的天花板：手感是一次性的，用完之后，人与物之间没有积累出任何东西。</p>
 
-  <h3><span class="num">1.3</span>研究问题</h3>
-  <p class="body">基于上述断裂，本研究提出三个具体问题。其一，能否用手上的动作代替语言自述，让身体先于意识完成表达。其二，七天是否足以让一个人对一件非生命物产生可测量的情感投入。其三，当外形不再由用户挑选、而由行为决定时，作者性会落在哪一侧，这种转移对疗愈是有利还是有害。</p>
+  <div class="grid4">
+    <figure class="cell"><img src="img/m1a.jpg" alt=""><figcaption>缠绕式握持：扭扭乐，手指逐根受力</figcaption></figure>
+    <figure class="cell"><img src="img/m2b.jpg" alt=""><figcaption>冰块捏捏，慢回弹透明质感</figcaption></figure>
+    <figure class="cell"><img src="img/m1b.jpg" alt=""><figcaption>硅胶材质：颗粒与哑光表面的组合</figcaption></figure>
+    <figure class="cell"><img src="img/m2a.jpg" alt=""><figcaption>食物拟态：面包与蛋挞的慢回弹</figcaption></figure>
+  </div>
+  <p class="capnote">电商平台在售的解压品类（2026 年 11 月截图）。它们的共同点是：只提供手感，不产生记忆。</p>
 
   <div class="callout">
     <div class="lbl">Design Position</div>
@@ -199,45 +202,17 @@
   </div>
 </section>
 
-<!-- ============ 02 理论 ============ -->
-<section id="theory" class="container reveal">
-  <div class="sec-head">
-    <div class="sec-no">02</div>
-    <div>
-      <h2>四条<em>理论线索</em></h2>
-      <p class="sec-sub">它们分别解释了物的吸引力、关系的形成、时间的作用与身体的角色。</p>
-    </div>
-  </div>
-
-  <div class="cols">
-    <div>
-      <h3><span class="num">2.1</span>情感化设计的三层</h3>
-      <p class="body">Norman 把人对物的情感反应分为本能层、行为层与反思层。<sup class="ref">[1]</sup> 蛋形在本能层上是安全的，它没有棱角、没有朝向、也没有可被误读的表情。行为层对应握持时的手感与重量。反思层则由七天之后那只宠物的形象承担，它携带了这段时间里发生过的事。三层必须各自成立，产品才不只是好看或者好玩。</p>
-
-      <h3><span class="num">2.2</span>依恋与拟人化</h3>
-      <p class="body">Bowlby 的依恋理论描述了人在不安时向特定对象靠近的倾向。<sup class="ref">[2]</sup> Reeves 与 Nass 的研究进一步表明，人会对具备最少量行为线索的物体施加社会性反应。<sup class="ref">[3]</sup> 这意味着形成依恋所需的线索远比想象中少，关键在于线索是否稳定、是否随时间变化。</p>
-    </div>
-    <div>
-      <h3><span class="num">2.3</span>慢科技与时间性</h3>
-      <p class="body">Hallnäs 与 Redström 提出慢科技的概念，主张设计应把注意力从效率转向反思，让使用过程本身变慢。<sup class="ref">[5]</sup> 七日孵化正是对这一主张的回应：如果宠物可以立刻获得，它就是一件商品；如果需要等待，它才可能成为一段关系的开端。重复接触会提升好感，这一效应在 Zajonc 的实验里已被反复验证。<sup class="ref">[9]</sup></p>
-
-      <h3><span class="num">2.4</span>具身交互</h3>
-      <p class="body">Dourish 认为意义产生于身体与世界的交互过程之中，而不仅产生于符号系统。<sup class="ref">[6]</sup> 把输入放在握持、揉搓、放置这些动作上，而非输入框与选项上，正是为了让表达绕过语言。这也解释了为什么本设计坚持不使用触屏作为主要输入。</p>
-    </div>
-  </div>
-</section>
-
 <!-- ============ 03 定位 ============ -->
 <section id="position" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">03</div>
+    <div class="sec-no">02</div>
     <div>
       <h2>设计<em>定位</em></h2>
       <p class="sec-sub">一个具体的人，在具体的几分钟里，需要的东西其实很少。</p>
     </div>
   </div>
 
-  <h3><span class="num">3.1</span>目标人群</h3>
+  <h3><span class="num">2.1</span>目标人群</h3>
   <table>
     <thead><tr><th style="width:24%">人群</th><th style="width:38%">所处处境</th><th>常见的一天</th></tr></thead>
     <tbody>
@@ -247,10 +222,10 @@
     </tbody>
   </table>
 
-  <h3><span class="num">3.2</span>四条设计原则</h3>
+  <h3><span class="num">2.2</span>四条设计原则</h3>
   <div class="principles">
     <div class="pr"><div class="k">P 01</div><div class="t">不问，只读</div><div class="d">不设置情绪标签、不打分、不要求日记。所有输入来自手的动作，用户不需要解释自己。</div></div>
-    <div class="pr"><div class="k">P 02</div><div class="t">先有等待，才有关系</div><div class="d">宠物不能即时获得。七天是一个下限，用来把"领取"变成"孵化"。</div></div>
+    <div class="pr"><div class="k">P 02</div><div class="t">先有等待，才有关系</div><div class="d">宠物不能即时获得。七天是一个下限，用来把"领取"变成"孵化"。时间是这段关系的一部分原料。<sup class="ref">[5]</sup></div></div>
     <div class="pr"><div class="k">P 03</div><div class="t">外形由行为沉积</div><div class="d">用户不挑选样式。模型依据信号生成候选，系统择一，宠物的样子是这段时间的证据。</div></div>
     <div class="pr"><div class="k">P 04</div><div class="t">从数字回到手里</div><div class="d">孵化完成后可以打印成实体寄出。数字关系需要一个可以被放在桌上的终点。</div></div>
   </div>
@@ -266,7 +241,7 @@
 <!-- ============ 04 系统 ============ -->
 <section id="system" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">04</div>
+    <div class="sec-no">03</div>
     <div>
       <h2>系统<em>构成</em></h2>
       <p class="sec-sub">从一次握持到一只可以被寄出的宠物，中间经过六层。</p>
@@ -335,14 +310,14 @@
 <!-- ============ 05 实体 ============ -->
 <section id="object" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">05</div>
+    <div class="sec-no">04</div>
     <div>
       <h2>蛋：一件<em>可以被握住</em>的物</h2>
       <p class="sec-sub">选择蛋形，是为了让它在被拿起时不发出任何要求。</p>
     </div>
   </div>
 
-  <p class="body">蛋形没有正面，也没有朝向。把它放在桌上，它不朝向任何人；把它握在手里，它的曲面与掌心自然贴合。这两点决定了它不会被当成一个需要操作的设备。球体同样满足前一条，但球体会滚动，需要一个额外的托；蛋不会，它停在哪里就是哪里。</p>
+  <p class="body">蛋形没有正面，也没有朝向。把它放在桌上，它不朝向任何人；把它握在手里，它的曲面与掌心自然贴合。这两点决定了它不会被当成一个需要操作的设备。球体同样满足前一条，但球体会滚动，需要一个额外的托；蛋不会，它停在哪里就是哪里。蛋形没有表情，也就不会被误读，这符合人对低线索对象的天然偏好。<sup class="ref">[4]</sup></p>
 
   <figure>
     <div class="fig-frame">
@@ -391,12 +366,12 @@
 
   <div class="cols">
     <div>
-      <h3><span class="num">5.1</span>形态与手感</h3>
+      <h3><span class="num">4.1</span>形态与手感</h3>
       <p class="body">高 78mm，最大直径 58mm，恰好落在成年人单手掌心包覆的区间内。外壳用哑光釉，避免指纹堆积；上半部覆一层 1.6mm 的硅胶，提供握持时的摩擦与轻微回弹。重心下移 12mm，放回桌上时不会倒。</p>
     </div>
     <div>
-      <h3><span class="num">5.2</span>结构与反馈</h3>
-      <p class="body">外壳与内胆之间留 2mm 空腔，用于走线与缓冲。内胆里是压力膜阵列、六轴模块与一枚小尺寸振动马达，底部为磁吸充电触点，整机没有按键。反馈只走两条通道：一条是微振，一条是内壁的暖光，两者都在握持时才出现。</p>
+      <h3><span class="num">4.2</span>结构与反馈</h3>
+      <p class="body">外壳与内胆之间留 2mm 空腔，用于走线与缓冲。内胆里是压力膜阵列、六轴模块与一枚小尺寸振动马达，底部为磁吸充电触点，整机没有按键。反馈只走两条通道：一条是微振，一条是内壁的暖光，两者都在握持时才出现。反馈是身体的，不是符号的。<sup class="ref">[6]</sup></p>
     </div>
   </div>
 </section>
@@ -404,7 +379,7 @@
 <!-- ============ 06 孵化 ============ -->
 <section id="hatch" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">06</div>
+    <div class="sec-no">05</div>
     <div>
       <h2>七日<em>孵化</em></h2>
       <p class="sec-sub">每天只做一件小事。七天之后，蛋壳裂开，出来的是这七天里你的样子。</p>
@@ -460,14 +435,14 @@
 <!-- ============ 07 生成 ============ -->
 <section id="generate" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">07</div>
+    <div class="sec-no">06</div>
     <div>
       <h2>形象<em>生成</em></h2>
       <p class="sec-sub">用户能看到六个候选，但只能接受其中被指定的那一个。</p>
     </div>
   </div>
 
-  <p class="body">把六天的数据翻译成形象，需要一个中间层：六个可调的形态参数。参数不是随机抽取的，每一个都由一类信号决定。模型（以 Claude Opus 系列为代表的多模态生成模型）在参数约束下输出六个候选形象，系统依据信号的确定性择一，其余五个不展示给用户，只在后台留档。</p>
+  <p class="body">把六天的数据翻译成形象，需要一个中间层：六个可调的形态参数。参数不是随机抽取的，每一个都由一类信号决定。模型（以 Claude Opus 系列为代表的多模态生成模型）在参数约束下输出六个候选形象，系统依据信号的确定性择一，其余五个不展示给用户，只在后台留档。同样的生成管线在社区已有完整先例。<sup class="ref">[4]</sup></p>
 
   <table>
     <thead><tr><th style="width:20%">形态参数</th><th style="width:30%">由什么决定</th><th>为什么是它</th></tr></thead>
@@ -481,27 +456,36 @@
     </tbody>
   </table>
 
-  <div class="callout">
+  <figure class="wide">
+      <img src="img/m4.jpg" alt="">
+      <figcaption>社区案例：以 Claude Opus 5.5 结合 Tripo 与 Blender，在十六天内将文本设定转化为可探索的三维场景。<sup class="ref">[3]</sup> 本设计的形象生成采用同一条技术路径，只是输出收敛为一只 60mm 以内的桌伴。</figcaption>
+    </figure>
+
+    <div class="callout">
     <div class="lbl">Authorship</div>
-    <p>不让用户挑选外形，是本设计与市面上所有宠物养成产品的分界。<b>一旦可以选择，宠物就退回到商品的位置</b>，而商品不会因为七天而变得特殊。把选择权交出去，换来的是一件无法被比较、也无法被替换的东西。</p>
+    <p>不让用户挑选外形，是本设计与市面上所有宠物养成产品的分界。<b>一旦可以选择，宠物就退回到商品的位置</b>，而商品不会因为七天而变得特殊。稀缺本身会改变一段关系的价值判断。<sup class="ref">[8]</sup>把选择权交出去，换来的是一件无法被比较、也无法被替换的东西。</p>
   </div>
 </section>
 
 <!-- ============ 08 空间 ============ -->
 <section id="space" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">08</div>
+    <div class="sec-no">07</div>
     <div>
       <h2>岛：一个<em>不需要经营</em>的空间</h2>
       <p class="sec-sub">参考《集合啦！动物森友会》的空间感，去掉它的经济系统。</p>
     </div>
   </div>
 
-  <p class="body">岛是宠物生活的地方，也是用户每天愿意打开一次的理由。动森的可借鉴之处在于它的空间尺度与节奏：地图小、移动慢、没有任务倒计时。不可借鉴之处在于它的经济系统，摘果子、卖大头菜、还房贷，这套循环把放松重新变成了工作。本设计的岛没有货币、没有等级、没有排行榜，也没有可交易的道具。</p>
+  <figure class="wide">
+      <img src="img/m3.jpg" alt="">
+      <figcaption>《集合啦！动物森友会》玩家自建的岛屿。借鉴的是它的尺度与节奏：地图小、移动慢、没有倒计时。</figcaption>
+    </figure>
+    <p class="body">岛是宠物生活的地方，也是用户每天愿意打开一次的理由。动森的可借鉴之处在于它的空间尺度与节奏：地图小、移动慢、没有任务倒计时。不可借鉴之处在于它的经济系统，摘果子、卖大头菜、还房贷，这套循环把放松重新变成了工作。本设计的岛没有货币、没有等级、没有排行榜，也没有可交易的道具。</p>
 
   <div class="cols">
     <div>
-      <h3><span class="num">8.1</span>三个区域</h3>
+      <h3><span class="num">7.1</span>三个区域</h3>
       <ul class="plain">
         <li><b>巢</b>　宠物睡觉的地方。孵化后最初两天它不会离开，用户只能看。</li>
         <li><b>坡</b>　一片缓坡，宠物在这里走动与停留。用户的握持习惯会影响它走路的节奏。</li>
@@ -509,7 +493,7 @@
       </ul>
     </div>
     <div>
-      <h3><span class="num">8.2</span>四条边界</h3>
+      <h3><span class="num">7.2</span>四条边界</h3>
       <ul class="plain">
         <li><b>每日十二分钟</b>　超过后岛上起雾，宠物回去睡觉，不做挽留。</li>
         <li><b>不能投喂与装饰</b>　没有可购买的物品，避免把关系变成养成数值。</li>
@@ -523,10 +507,10 @@
 <!-- ============ 09 回流 ============ -->
 <section id="print" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">09</div>
+    <div class="sec-no">08</div>
     <div>
       <h2>从屏幕<em>回到桌面</em></h2>
-      <p class="sec-sub">数字关系需要一个可以被放在桌上的终点。</p>
+      <p class="sec-sub">数字关系需要一个可以被放在桌上的终点。体验经济的落点从来都是可留存的实物记忆。<sup class="ref">[8]</sup>
     </div>
   </div>
 
@@ -538,7 +522,7 @@
 <!-- ============ 10 流程 ============ -->
 <section id="journey" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">10</div>
+    <div class="sec-no">09</div>
     <div>
       <h2>完整<em>使用流程</em></h2>
       <p class="sec-sub">从拆箱到收到实体，前后四十天。</p>
@@ -560,7 +544,7 @@
 <!-- ============ 11 验证 ============ -->
 <section id="eval" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">11</div>
+    <div class="sec-no">10</div>
     <div>
       <h2>怎么<em>验证</em></h2>
       <p class="sec-sub">不做疗效声称，只检验三件可以被测量的事。</p>
@@ -582,7 +566,7 @@
 <!-- ============ 12 伦理 ============ -->
 <section id="ethic" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">12</div>
+    <div class="sec-no">11</div>
     <div>
       <h2>边界与<em>伦理</em></h2>
       <p class="sec-sub">这条线必须写在产品里，而不只写在论文里。</p>
@@ -600,25 +584,21 @@
 <!-- ============ 13 文献 ============ -->
 <section id="refs" class="container reveal">
   <div class="sec-head">
-    <div class="sec-no">13</div>
+    <div class="sec-no">12</div>
     <div>
       <h2>参考<em>文献</em></h2>
     </div>
   </div>
   <ol class="refs-list">
     <li>Norman, D. A. <i>Emotional Design: Why We Love (or Hate) Everyday Things</i>. Basic Books, 2004.</li>
-    <li>Bowlby, J. <i>Attachment and Loss, Vol. 1: Attachment</i>. Basic Books, 1969.</li>
-    <li>Reeves, B., &amp; Nass, C. <i>The Media Equation: How People Treat Computers, Television, and New Media Like Real People</i>. Cambridge University Press, 1996.</li>
-    <li>Turkle, S. <i>Alone Together: Why We Expect More from Technology and Less from Each Other</i>. Basic Books, 2011.</li>
+    <li>公开电商平台在售慢回弹解压品类观测，2026 年 11 月（淘宝 / 天猫搜索"捏捏"，按销量排序）。</li>
+    <li>社区公开案例：Sac, <i>The Little Prince: Across the Stars</i>, littleprince.dev, 2026. 以 Claude Opus 5.5 结合 Tripo 与 Blender 制作的 AI 三维游戏。</li>
+    <li>Reeves, B., &amp; Nass, C. <i>The Media Equation</i>. Cambridge University Press, 1996.</li>
     <li>Hallnäs, L., &amp; Redström, J. Slow Technology: Designing for Reflection. <i>Personal and Ubiquitous Computing</i>, 5(3), 201–212, 2001.</li>
-    <li>Dourish, P. <i>Where the Action Is: The Foundations of Embodied Interaction</i>. MIT Press, 2001.</li>
-    <li>Hassenzahl, M. <i>Experience Design: Technology for All the Right Reasons</i>. Morgan &amp; Claypool, 2010.</li>
-    <li>Picard, R. W. <i>Affective Computing</i>. MIT Press, 1997.</li>
-    <li>Zajonc, R. B. Attitudinal Effects of Mere Exposure. <i>Journal of Personality and Social Psychology</i>, 9(2), 1–27, 1968.</li>
-    <li>Oldenburg, R. <i>The Great Good Place</i>. Paragon House, 1989.</li>
-    <li>Fogg, B. J. <i>Persuasive Technology: Using Computers to Change What We Think and Do</i>. Morgan Kaufmann, 2003.</li>
+    <li>Dourish, P. <i>Where the Action Is</i>. MIT Press, 2001.</li>
+    <li>Zajonc, R. B. Attitudinal Effects of Mere Exposure. <i>Journal of Personality and Social Psychology</i>, 9(2), 1968.</li>
     <li>Pine, B. J., &amp; Gilmore, J. H. <i>The Experience Economy</i>. Harvard Business School Press, 1999.</li>
-    <li>World Health Organization. <i>International Classification of Diseases, 11th Revision</i>, QD85 Burnout, 2019.</li>
+    <li>World Health Organization. <i>ICD-11</i>, QD85 Burnout, 2019.</li>
   </ol>
 </section>
 

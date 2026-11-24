@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基于 AI 的疗愈数字设计</title>
+<meta name="description" content="以蛋形实体为感知入口、生成模型为形象决策者、虚拟岛屿为日常陪伴场所的疗愈数字设计研究。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#ffffff; --bg-2:#f4f6f8;
+    --ink:#16181d; --ink-2:#4b5563; --ink-3:#9ca3af;
+    --line:rgba(22,24,29,.09); --line-2:rgba(22,24,29,.14);
+    --accent:#2563eb; --gold:#d4af37; --sage:#4a7c59; --rose:#c45a5a;
+    --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+    --sans:'Space Grotesk','Noto Sans SC',-apple-system,sans-serif;
+    --zh:'Noto Sans SC','PingFang SC',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--zh);font-weight:400;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(37,99,235,.07),transparent 60%),
+               radial-gradient(ellipse 60% 40% at 82% 28%,rgba(212,175,55,.05),transparent 60%),
+               radial-gradient(ellipse 60% 40% at 16% 72%,rgba(74,124,89,.045),transparent 60%)}
+  .grain::after{content:'';position:absolute;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity:.055;mix-blend-mode:overlay}
+
+  nav{position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:100;
+    background:rgba(255,255,255,.74);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+    border:1px solid var(--line-2);border-radius:999px;padding:9px 12px 9px 20px;
+    display:flex;align-items:center;gap:22px;font-size:12.5px;font-weight:500;white-space:nowrap}
+  nav .logo{font-family:var(--serif);font-weight:600;font-size:14px;letter-spacing:-.01em}
+  nav .logo span{color:var(--accent)}
+  nav a{color:var(--ink-2);text-decoration:none;transition:color .25s;font-family:var(--sans);letter-spacing:.01em}
+  nav a:hover,nav a.on{color:var(--ink)}
+  nav .sep{width:1px;height:14px;background:var(--line-2)}
+
+  .container{max-width:1120px;margin:0 auto;padding:0 48px;position:relative;z-index:1}
+
+  /* hero */
+  .hero{padding:150px 0 64px;text-align:center}
+  .kicker{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);margin-bottom:26px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,4.4rem);line-height:1.06;letter-spacing:-.035em;max-width:22ch;margin:0 auto 22px}
+  h1 em{font-style:italic;font-weight:300;color:var(--accent)}
+  .lede{font-size:clamp(15px,1.35vw,18px);line-height:1.85;color:var(--ink-2);max-width:56ch;margin:0 auto}
+  .byline{margin-top:34px;font-family:var(--sans);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+
+  /* abstract */
+  .abstract{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:40px 0;margin-top:56px;
+    display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  .abstract h4{font-family:var(--sans);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;font-weight:500}
+  .abstract p{font-size:13.5px;line-height:1.85;color:var(--ink-2);text-align:justify}
+  .abstract .en{font-family:var(--sans);font-size:12.5px;line-height:1.85;color:var(--ink-2)}
+  .kw{margin-top:14px;font-size:12px;color:var(--ink-3)}
+  .kw b{color:var(--ink-2);font-weight:500}
+
+  /* section */
+  section{padding-top:96px}
+  .sec-head{border-top:1px solid var(--line);padding-top:26px;margin-bottom:34px;
+    display:grid;grid-template-columns:88px 1fr;gap:24px;align-items:start}
+  .sec-no{font-family:var(--sans);font-size:11px;letter-spacing:.16em;color:var(--ink-3);padding-top:10px}
+  h2{font-family:var(--serif);font-size:clamp(24px,2.6vw,33px);font-weight:500;letter-spacing:-.02em;line-height:1.25}
+  h2 em{font-style:italic;font-weight:300;color:var(--accent)}
+  .sec-sub{color:var(--ink-2);font-size:14px;margin-top:8px;max-width:64ch}
+  h3{font-size:15px;font-weight:600;margin:34px 0 10px;letter-spacing:.01em}
+  h3 .num{font-family:var(--sans);color:var(--ink-3);font-weight:500;margin-right:8px;font-size:12px}
+  p.body{font-size:14.5px;line-height:1.95;color:var(--ink-2);max-width:74ch;margin-bottom:14px;text-align:justify}
+  p.body b{color:var(--ink);font-weight:600}
+  sup.ref{font-family:var(--sans);font-size:9.5px;color:var(--accent);margin-left:2px;font-weight:500;vertical-align:super;text-decoration:none}
+
+  /* callout */
+  .callout{border-left:2px solid var(--accent);padding:4px 0 4px 20px;margin:24px 0;max-width:74ch}
+  .callout .lbl{font-family:var(--sans);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .callout p{font-size:14px;line-height:1.85;color:var(--ink-2)}
+  .callout p b{color:var(--ink)}
+
+  /* metrics */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:34px 0}
+  .metric{background:#fff;padding:20px 18px}
+  .metric .n{font-family:var(--serif);font-size:30px;font-weight:400;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .metric .n small{font-size:13px;font-family:var(--zh);color:var(--ink-2);margin-left:3px;letter-spacing:0}
+  .metric .l{font-size:11px;color:var(--ink-3);margin-top:6px;line-height:1.5}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;margin:22px 0 6px;font-size:13px}
+  th{text-align:left;font-family:var(--sans);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:9px 12px 9px 0;border-bottom:1px solid var(--ink)}
+  td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top;line-height:1.7}
+  td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+  td .sm{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  tbody tr:last-child td{border-bottom:1px solid var(--line-2)}
+
+  /* figure */
+  figure{margin:30px 0 8px}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-size:11.5px;color:var(--ink-3);margin-top:10px;letter-spacing:.02em}
+  .fig-frame{border:1px solid var(--line);background:#fcfcfd;padding:22px}
+
+  /* two-col */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:8px}
+  .cols h3{margin-top:0}
+  ul.plain{list-style:none;margin:6px 0 0}
+  ul.plain li{position:relative;padding-left:16px;font-size:13.5px;line-height:1.85;color:var(--ink-2);margin-bottom:6px}
+  ul.plain li::before{content:'';position:absolute;left:0;top:13px;width:5px;height:1px;background:var(--ink-3)}
+  ul.plain li b{color:var(--ink);font-weight:600}
+
+  /* principle cards */
+  .principles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+  .pr{background:#fff;padding:22px 24px}
+  .pr .k{font-family:var(--sans);font-size:10px;letter-spacing:.16em;color:var(--accent);margin-bottom:8px}
+  .pr .t{font-size:14.5px;font-weight:600;margin-bottom:6px}
+  .pr .d{font-size:13px;line-height:1.8;color:var(--ink-2)}
+
+  /* refs */
+  .refs-list{margin-top:18px;counter-reset:r}
+  .refs-list li{list-style:none;font-size:12.5px;line-height:1.8;color:var(--ink-2);padding-left:34px;position:relative;margin-bottom:8px}
+  .refs-list li::before{counter-increment:r;content:'['counter(r)']';position:absolute;left:0;font-family:var(--sans);color:var(--ink-3);font-size:11px}
+
+  footer{margin-top:110px;border-top:1px solid var(--line);padding:34px 0 70px;
+    display:flex;justify-content:space-between;gap:24px;font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .container{padding:0 22px}
+    nav{top:12px;gap:12px;font-size:11px;padding:8px 10px 8px 14px;max-width:calc(100vw - 24px);overflow-x:auto}
+    nav .logo{display:none}
+    .hero{padding:110px 0 40px}
+    .abstract{grid-template-columns:1fr;gap:28px}
+    .metrics{grid-template-columns:1fr 1fr}
+    .cols,.principles,.sec-head{grid-template-columns:1fr;gap:18px}
+    .sec-no{padding-top:0}
+    section{padding-top:64px}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav>
+  <div class="logo">疗愈<span>·</span>数字设计</div>
+  <div class="sep"></div>
+  <a href="#bg">背景</a>
+  <a href="#theory">理论</a>
+  <a href="#position">定位</a>
+  <a href="#system">系统</a>
+  <a href="#hatch">孵化</a>
+  <a href="#space">空间</a>
+  <a href="#eval">验证</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero container">
+  <div class="kicker">Graduation Project · 2026</div>
+  <h1>基于 AI 的<em>疗愈</em>数字设计</h1>
+  <p class="lede">一枚握在手里的蛋，用七天时间读出你的握持与节律，由生成模型据此长出一只宠物。它先住在手机里的一座小岛上，之后可以被打印成实体，寄到你家里。</p>
+  <div class="byline">Industrial Design · Beijing University of Technology</div>
+
+  <div class="abstract">
+    <div>
+      <h4>摘要</h4>
+      <p>本文以高压中青年人群的情绪调节为切入点，提出一种以蛋形实体为感知入口、以生成式模型为形象决策者、以虚拟岛屿为日常陪伴场所、以三维打印为物质回流的疗愈数字设计。设计主张在于把宠物的选择权从用户手中移出：用户不挑选外形，外形由七天的握持行为与节律数据决定，模型生成候选、系统择一，使宠物成为行为的沉积而非消费的对象。研究以十二名被试的七日孵化实验，结合积极情感量表、孤独量表与半结构访谈，检验该机制能否在七天内形成可测量的情感投入。<sup class="ref">[1]</sup></p>
+      <p class="kw"><b>关键词</b>　情感疗愈 · 生成式设计 · 具身交互 · 慢科技 · 数字陪伴</p>
+    </div>
+    <div>
+      <h4>Abstract</h4>
+      <p class="en">This project proposes a healing-oriented digital design for young professionals under sustained stress. An egg-shaped physical object serves as the sensing interface; a generative model decides the appearance of the companion creature rather than the user; a virtual island hosts daily interaction; and 3D printing returns the creature to the physical world. The central proposition is a transfer of authorship: appearance is deposited by seven days of holding behaviour, not chosen from a catalogue. A seven-day incubation study with twelve participants, combining PANAS, the UCLA Loneliness Scale and semi-structured interviews, examines whether measurable attachment can form within one week.</p>
+      <p class="kw"><b>Keywords</b>　emotional healing · generative design · embodied interaction · slow technology · digital companionship</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 背景 ============ -->
+<section id="bg" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">01</div>
+    <div>
+      <h2>情绪耗竭成为一种<em>日常状态</em></h2>
+      <p class="sec-sub">问题不在于压力本身，而在于压力缺少可以停留的地方。</p>
+    </div>
+  </div>
+
+  <h3><span class="num">1.1</span>压力被分摊到每一天</h3>
+  <p class="body">世界卫生组织在 ICD-11 中把职业倦怠列为一种职业现象，其三个维度是精力耗竭、心理距离增加与效能感下降。<sup class="ref">[13]</sup> 对刚进入大学高年级与职场前五年的人而言，这三种状态往往同时出现，并且没有明确的起点与终点。压力不再表现为某个事件，而表现为一天里反复出现的几段空白：会议之间的十分钟、通勤的四十分钟、睡前关灯之后。</p>
+
+  <h3><span class="num">1.2</span>现有产品在两处断开</h3>
+  <p class="body">市面上的解压玩具提供了真实的手感，但用它的人得不到任何回馈，捏过之后没有任何东西被留下。情绪类应用则相反，它们要求用户主动打开、主动选择情绪标签、主动写下一段话。对于一个已经疲惫的人来说，<b>描述自己比承受本身更费力</b>。Turkle 在讨论模拟陪伴时指出，人们倾向于选择那些对自己提出更低要求的对象。<sup class="ref">[4]</sup> 这一观察解释了为什么大量情绪记录工具在三天内被放弃。</p>
+
+  <h3><span class="num">1.3</span>研究问题</h3>
+  <p class="body">基于上述断裂，本研究提出三个具体问题。其一，能否用手上的动作代替语言自述，让身体先于意识完成表达。其二，七天是否足以让一个人对一件非生命物产生可测量的情感投入。其三，当外形不再由用户挑选、而由行为决定时，作者性会落在哪一侧，这种转移对疗愈是有利还是有害。</p>
+
+  <div class="callout">
+    <div class="lbl">Design Position</div>
+    <p>本设计不做情绪识别，也不做心理评估。它只处理一件事：<b>让一段本来无处安放的时间，有一个具体的落点。</b></p>
+  </div>
+</section>
+
+<!-- ============ 02 理论 ============ -->
+<section id="theory" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">02</div>
+    <div>
+      <h2>四条<em>理论线索</em></h2>
+      <p class="sec-sub">它们分别解释了物的吸引力、关系的形成、时间的作用与身体的角色。</p>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <h3><span class="num">2.1</span>情感化设计的三层</h3>
+      <p class="body">Norman 把人对物的情感反应分为本能层、行为层与反思层。<sup class="ref">[1]</sup> 蛋形在本能层上是安全的，它没有棱角、没有朝向、也没有可被误读的表情。行为层对应握持时的手感与重量。反思层则由七天之后那只宠物的形象承担，它携带了这段时间里发生过的事。三层必须各自成立，产品才不只是好看或者好玩。</p>
+
+      <h3><span class="num">2.2</span>依恋与拟人化</h3>
+      <p class="body">Bowlby 的依恋理论描述了人在不安时向特定对象靠近的倾向。<sup class="ref">[2]</sup> Reeves 与 Nass 的研究进一步表明，人会对具备最少量行为线索的物体施加社会性反应。<sup class="ref">[3]</sup> 这意味着形成依恋所需的线索远比想象中少，关键在于线索是否稳定、是否随时间变化。</p>
+    </div>
+    <div>
+      <h3><span class="num">2.3</span>慢科技与时间性</h3>
+      <p class="body">Hallnäs 与 Redström 提出慢科技的概念，主张设计应把注意力从效率转向反思，让使用过程本身变慢。<sup class="ref">[5]</sup> 七日孵化正是对这一主张的回应：如果宠物可以立刻获得，它就是一件商品；如果需要等待，它才可能成为一段关系的开端。重复接触会提升好感，这一效应在 Zajonc 的实验里已被反复验证。<sup class="ref">[9]</sup></p>
+
+      <h3><span class="num">2.4</span>具身交互</h3>
+      <p class="body">Dourish 认为意义产生于身体与世界的交互过程之中，而不仅产生于符号系统。<sup class="ref">[6]</sup> 把输入放在握持、揉搓、放置这些动作上，而非输入框与选项上，正是为了让表达绕过语言。这也解释了为什么本设计坚持不使用触屏作为主要输入。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 定位 ============ -->
+<section id="position" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">03</div>
+    <div>
+      <h2>设计<em>定位</em></h2>
+      <p class="sec-sub">一个具体的人，在具体的几分钟里，需要的东西其实很少。</p>
+    </div>
+  </div>
+
+  <h3><span class="num">3.1</span>目标人群</h3>
+  <table>
+    <thead><tr><th style="width:24%">人群</th><th style="width:38%">所处处境</th><th>常见的一天</th></tr></thead>
+    <tbody>
+      <tr><td>在校高年级学生</td><td>考研、实习、秋招叠在一起，压力集中且无处可说</td><td>白天在图书馆，晚上回宿舍，情绪在关灯后最明显</td></tr>
+      <tr><td>工作一到五年的年轻人</td><td>一线与新一线，加班、通勤、述职轮番出现</td><td>会议之间十分钟、地铁四十分钟、睡前十分钟</td></tr>
+      <tr><td>刚毕业、刚换岗的人</td><td>既没有同学圈也没有同事圈，是最难开口求助的一段</td><td>独自吃饭，独自回家，社交账单降到最低</td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="num">3.2</span>四条设计原则</h3>
+  <div class="principles">
+    <div class="pr"><div class="k">P 01</div><div class="t">不问，只读</div><div class="d">不设置情绪标签、不打分、不要求日记。所有输入来自手的动作，用户不需要解释自己。</div></div>
+    <div class="pr"><div class="k">P 02</div><div class="t">先有等待，才有关系</div><div class="d">宠物不能即时获得。七天是一个下限，用来把"领取"变成"孵化"。</div></div>
+    <div class="pr"><div class="k">P 03</div><div class="t">外形由行为沉积</div><div class="d">用户不挑选样式。模型依据信号生成候选，系统择一，宠物的样子是这段时间的证据。</div></div>
+    <div class="pr"><div class="k">P 04</div><div class="t">从数字回到手里</div><div class="d">孵化完成后可以打印成实体寄出。数字关系需要一个可以被放在桌上的终点。</div></div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="n">7<small>天</small></div><div class="l">孵化周期，每日一次交互</div></div>
+    <div class="metric"><div class="n">78<small>mm</small></div><div class="l">蛋体高度，单手可完全包覆</div></div>
+    <div class="metric"><div class="n">6<small>项</small></div><div class="l">参与生成的形象参数</div></div>
+    <div class="metric"><div class="n">1<small>只</small></div><div class="l">每人一次，不可重来</div></div>
+  </div>
+</section>
+
+<!-- ============ 04 系统 ============ -->
+<section id="system" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">04</div>
+    <div>
+      <h2>系统<em>构成</em></h2>
+      <p class="sec-sub">从一次握持到一只可以被寄出的宠物，中间经过六层。</p>
+    </div>
+  </div>
+
+  <figure>
+    <div class="fig-frame">
+      <svg viewBox="0 0 960 258" role="img" aria-label="系统分层结构图">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="#9ca3af"/>
+          </marker>
+        </defs>
+        <g font-family="Space Grotesk, sans-serif" font-size="10" fill="#9ca3af" letter-spacing="1.6">
+          <text x="0" y="14">SIGNAL</text><text x="196" y="14">STATE</text><text x="392" y="14">PROFILE</text>
+          <text x="588" y="14">GENERATION</text><text x="784" y="14">SPACE</text>
+        </g>
+        <g stroke="#16181d" stroke-width="1">
+          <rect x="0" y="26" width="150" height="86" fill="#fff"/>
+          <rect x="196" y="26" width="150" height="86" fill="#fff"/>
+          <rect x="392" y="26" width="150" height="86" fill="#fff"/>
+          <rect x="588" y="26" width="150" height="86" fill="#fff"/>
+          <rect x="784" y="26" width="150" height="86" fill="#fff"/>
+        </g>
+        <g font-family="Noto Sans SC, sans-serif" font-size="12.5" fill="#16181d">
+          <text x="14" y="52">蛋形实体</text><text x="210" y="52">状态判定</text><text x="406" y="52">长期画像</text>
+          <text x="602" y="52">形象生成</text><text x="798" y="52">数字岛屿</text>
+        </g>
+        <g font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#6b7280">
+          <text x="14" y="74">压力 / 揉搓 / 放置</text><text x="14" y="90">体温（预留）</text>
+          <text x="210" y="74">四个手部状态</text><text x="210" y="90">当次可用</text>
+          <text x="406" y="74">六个维度</text><text x="406" y="90">按周更新</text>
+          <text x="602" y="74">六个参数</text><text x="602" y="90">候选择一</text>
+          <text x="798" y="74">巢 / 坡 / 滩</text><text x="798" y="90">每日十二分钟</text>
+        </g>
+        <g stroke="#9ca3af" stroke-width="1" marker-end="url(#ar)">
+          <line x1="156" y1="69" x2="190" y2="69"/>
+          <line x1="352" y1="69" x2="386" y2="69"/>
+          <line x1="548" y1="69" x2="582" y2="69"/>
+          <line x1="744" y1="69" x2="778" y2="69"/>
+        </g>
+
+        <path d="M859,118 L859,150 L150,150 L150,168" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle cx="150" cy="168" r="2.5" fill="#2563eb"/>
+        <text x="176" y="146" font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#2563eb">反馈：光 / 微振 / 温度</text>
+
+        <g stroke="#16181d" stroke-width="1">
+          <rect x="0" y="192" width="940" height="52" fill="#fff"/>
+        </g>
+        <text x="14" y="214" font-family="Noto Sans SC, sans-serif" font-size="12.5" fill="#16181d">物质回流</text>
+        <text x="14" y="232" font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#6b7280">三维打印 · 编号 · 寄送</text>
+
+        <g stroke="#9ca3af" stroke-width="1" marker-end="url(#ar)">
+          <line x1="859" y1="118" x2="859" y2="186"/>
+        </g>
+        <text x="640" y="214" font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#6b7280">孵化完成后可选，把岛上那只做成桌上的那只</text>
+      </svg>
+    </div>
+    <figcaption>图 1　系统分层与数据流向。虚线为触觉反馈回路，实线为数据与物质通路。</figcaption>
+  </figure>
+
+  <p class="body">六层各自可以独立验证，但只有串起来才成立。信号层只负责把动作变成数据；状态层把当次数据压成四个可用的判断；画像层把单次放进周与月的尺度，形成对一个人的描述；生成层把描述翻译成形态；空间层给这只宠物一个每天生活的地方；物质层则让它可以离开屏幕。</p>
+</section>
+
+<!-- ============ 05 实体 ============ -->
+<section id="object" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">05</div>
+    <div>
+      <h2>蛋：一件<em>可以被握住</em>的物</h2>
+      <p class="sec-sub">选择蛋形，是为了让它在被拿起时不发出任何要求。</p>
+    </div>
+  </div>
+
+  <p class="body">蛋形没有正面，也没有朝向。把它放在桌上，它不朝向任何人；把它握在手里，它的曲面与掌心自然贴合。这两点决定了它不会被当成一个需要操作的设备。球体同样满足前一条，但球体会滚动，需要一个额外的托；蛋不会，它停在哪里就是哪里。</p>
+
+  <figure>
+    <div class="fig-frame">
+      <svg viewBox="0 0 900 470" role="img" aria-label="蛋形实体剖面结构图">
+        <g stroke="#16181d" fill="none">
+          <path d="M450 40 C560 40 610 170 610 275 C610 375 545 432 450 432 C355 432 290 375 290 275 C290 170 340 40 450 40 Z" stroke-width="1.4"/>
+          <path d="M450 62 C542 62 586 178 586 276 C586 362 531 410 450 410 C369 410 314 362 314 276 C314 178 358 62 450 62 Z" stroke-width="1" stroke-dasharray="2 3" stroke="#9ca3af"/>
+        </g>
+        <path d="M450 62 C542 62 586 178 586 276 C586 362 531 410 450 410 C369 410 314 362 314 276 C314 178 358 62 450 62 Z" fill="rgba(37,99,235,0.045)"/>
+
+        <g stroke="#2563eb" stroke-width="1" fill="none">
+          <rect x="352" y="200" width="120" height="54" rx="4"/>
+        </g>
+        <g font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#2563eb">
+          <text x="360" y="222">压力膜阵列</text><text x="360" y="240">六轴模块</text>
+        </g>
+
+        <g stroke="#16181d" stroke-width="1">
+          <line x1="610" y1="150" x2="712" y2="150"/><line x1="712" y1="150" x2="786" y2="150"/>
+          <line x1="610" y1="276" x2="758" y2="276"/><line x1="758" y1="276" x2="786" y2="276"/>
+          <line x1="610" y1="392" x2="700" y2="392"/><line x1="700" y1="392" x2="786" y2="392"/>
+          <line x1="290" y1="180" x2="188" y2="180"/><line x1="188" y1="180" x2="114" y2="180"/>
+          <line x1="290" y1="330" x2="204" y2="330"/><line x1="204" y1="330" x2="114" y2="330"/>
+        </g>
+        <g font-family="Noto Sans SC, sans-serif" font-size="11" fill="#16181d">
+          <text x="792" y="154">哑光釉外壳</text><text x="792" y="280">内胆与配重</text><text x="792" y="396">充电触点</text>
+          <text x="20" y="184">硅胶握持层</text><text x="20" y="334">无缝分模线</text>
+        </g>
+        <g font-family="Noto Sans SC, sans-serif" font-size="10" fill="#6b7280">
+          <text x="20" y="202">1.6mm，止滑</text><text x="792" y="172">0.8mm 厚，微孔</text>
+          <text x="792" y="298">重心下移 12mm</text><text x="20" y="352">0.2mm 台阶</text>
+        </g>
+
+        <g stroke="#9ca3af" stroke-width="1">
+          <line x1="770" y1="40" x2="770" y2="432" stroke-dasharray="4 4"/>
+          <line x1="748" y1="40" x2="792" y2="40"/><line x1="748" y1="432" x2="792" y2="432"/>
+          <line x1="290" y1="458" x2="610" y2="458"/>
+          <line x1="290" y1="449" x2="290" y2="467"/><line x1="610" y1="449" x2="610" y2="467"/>
+        </g>
+        <text x="742" y="32" font-family="Space Grotesk, sans-serif" font-size="10" fill="#9ca3af" letter-spacing="1">H 78</text>
+        <text x="424" y="450" font-family="Space Grotesk, sans-serif" font-size="10" fill="#9ca3af" letter-spacing="1">Ø 58</text>
+      </svg>
+    </div>
+    <figcaption>图 2　蛋体剖面。外壳、握持层、内胆、传感与配重的相对位置，以及重心偏向底部的处理。</figcaption>
+  </figure>
+
+  <div class="cols">
+    <div>
+      <h3><span class="num">5.1</span>形态与手感</h3>
+      <p class="body">高 78mm，最大直径 58mm，恰好落在成年人单手掌心包覆的区间内。外壳用哑光釉，避免指纹堆积；上半部覆一层 1.6mm 的硅胶，提供握持时的摩擦与轻微回弹。重心下移 12mm，放回桌上时不会倒。</p>
+    </div>
+    <div>
+      <h3><span class="num">5.2</span>结构与反馈</h3>
+      <p class="body">外壳与内胆之间留 2mm 空腔，用于走线与缓冲。内胆里是压力膜阵列、六轴模块与一枚小尺寸振动马达，底部为磁吸充电触点，整机没有按键。反馈只走两条通道：一条是微振，一条是内壁的暖光，两者都在握持时才出现。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 孵化 ============ -->
+<section id="hatch" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">06</div>
+    <div>
+      <h2>七日<em>孵化</em></h2>
+      <p class="sec-sub">每天只做一件小事。七天之后，蛋壳裂开，出来的是这七天里你的样子。</p>
+    </div>
+  </div>
+
+  <p class="body">孵化不做任务清单，也不设积分。每天的手部行为都会被记录，但用户看不到任何数字。蛋只在两种时刻回应：被握住超过二十秒时，内壁亮一次；被放下超过四小时没有再次被拿起时，轻微振动一次。第七天结束时，蛋会在用户不在场的时候裂开。</p>
+
+  <figure>
+    <div class="fig-frame">
+      <svg viewBox="0 0 960 200" role="img" aria-label="七日孵化时间轴">
+        <line x1="60" y1="90" x2="756" y2="90" stroke="#e5e7eb" stroke-width="1"/>
+        <line x1="60" y1="90" x2="756" y2="90" stroke="#16181d" stroke-width="1"/>
+        <g font-family="Space Grotesk, sans-serif" font-size="10" fill="#9ca3af">
+          <text x="52" y="126">D1</text><text x="168" y="126">D2</text><text x="284" y="126">D3</text>
+          <text x="400" y="126">D4</text><text x="516" y="126">D5</text><text x="632" y="126">D6</text><text x="748" y="126">D7</text>
+        </g>
+        <g fill="#fff" stroke="#16181d" stroke-width="1">
+          <circle cx="60" cy="90" r="4"/><circle cx="176" cy="90" r="4"/><circle cx="292" cy="90" r="4"/>
+          <circle cx="408" cy="90" r="4"/><circle cx="524" cy="90" r="4"/><circle cx="640" cy="90" r="4"/>
+        </g>
+        <circle cx="756" cy="90" r="7" fill="#2563eb"/>
+        <g font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#16181d">
+          <text x="26" y="72">沉默</text><text x="132" y="72">基线</text><text x="248" y="72">第一次回应</text>
+          <text x="364" y="72">中断</text><text x="480" y="72">加速</text><text x="596" y="72">收拢</text>
+        </g>
+        <text x="712" y="72" font-family="Noto Sans SC, sans-serif" font-size="10.5" fill="#2563eb">裂开</text>
+        <g font-family="Noto Sans SC, sans-serif" font-size="9.5" fill="#9ca3af">
+          <text x="26" y="150">不给任何反馈</text><text x="132" y="150">建立个体区间</text><text x="248" y="150">亮一次</text>
+          <text x="364" y="150">次日不补</text><text x="480" y="150">形态开始收窄</text><text x="596" y="150">停止记录</text>
+        </g>
+        <text x="716" y="150" font-family="Noto Sans SC, sans-serif" font-size="9.5" fill="#2563eb">生成形象</text>
+        <text x="60" y="182" font-family="Noto Sans SC, sans-serif" font-size="9.5" fill="#9ca3af">第 1 天不给反馈，是为了让后面六天的反馈有信息量。</text>
+      </svg>
+    </div>
+    <figcaption>图 3　七日节奏。第七天的裂开不设提醒，用户下一次拿起时才看见。</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th style="width:14%">阶段</th><th style="width:30%">蛋在做什么</th><th style="width:28%">记录什么</th><th>宠物在长什么</th></tr></thead>
+    <tbody>
+      <tr><td>D1 沉默</td><td>只记录，不反馈，亮度为零</td><td>握持时长、施力峰值</td><td>还没有形象</td></tr>
+      <tr><td>D2 基线</td><td>开始建立个体区间</td><td>揉搓频率、放置间隔</td><td>内部参数确立</td></tr>
+      <tr><td>D3 回应</td><td>首次亮起，持续一秒</td><td>一天中的时段分布</td><td>轮廓开始出现</td></tr>
+      <tr><td>D4 中断</td><td>若未使用，不补偿、不催促</td><td>缺勤本身作为信号</td><td>形态收窄一档</td></tr>
+      <tr><td>D5 加速</td><td>振动一次，间隔拉长</td><td>恢复速度</td><td>表面质感确定</td></tr>
+      <tr><td>D6 收拢</td><td>停止记录，进入静默</td><td>全周期汇总</td><td>生成六个候选</td></tr>
+      <tr><td>D7 裂开</td><td>外壳沿分模线裂开</td><td>不再采集</td><td>择一，出现在岛上</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 07 生成 ============ -->
+<section id="generate" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">07</div>
+    <div>
+      <h2>形象<em>生成</em></h2>
+      <p class="sec-sub">用户能看到六个候选，但只能接受其中被指定的那一个。</p>
+    </div>
+  </div>
+
+  <p class="body">把六天的数据翻译成形象，需要一个中间层：六个可调的形态参数。参数不是随机抽取的，每一个都由一类信号决定。模型（以 Claude Opus 系列为代表的多模态生成模型）在参数约束下输出六个候选形象，系统依据信号的确定性择一，其余五个不展示给用户，只在后台留档。</p>
+
+  <table>
+    <thead><tr><th style="width:20%">形态参数</th><th style="width:30%">由什么决定</th><th>为什么是它</th></tr></thead>
+    <tbody>
+      <tr><td>体型</td><td>七日的总握持时长</td><td>握得越久，体型越圆。圆意味着更少的边缘，也就是更少的攻击性。</td></tr>
+      <tr><td>表面</td><td>揉搓的频率与幅度</td><td>高频小幅生成细密颗粒，低频大幅生成块面。手感被翻译成视觉质感。</td></tr>
+      <tr><td>色彩</td><td>使用时段</td><td>深夜为主偏冷灰，清晨为主偏暖砂。颜色记录的是时间，不是情绪。</td></tr>
+      <tr><td>五官</td><td>首次回应的反应速度</td><td>回应越快，眼睛越大。它保留的是人与它第一次对视时的距离。</td></tr>
+      <tr><td>动作节奏</td><td>放置间隔的分布</td><td>间隔均匀则动作舒缓，间隔破碎则动作短促。</td></tr>
+      <tr><td>一件附属物</td><td>中断的天数</td><td>缺勤一天生成一道裂纹，缺勤两天生成一处缺角。裂痕被保留，不被修复。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="lbl">Authorship</div>
+    <p>不让用户挑选外形，是本设计与市面上所有宠物养成产品的分界。<b>一旦可以选择，宠物就退回到商品的位置</b>，而商品不会因为七天而变得特殊。把选择权交出去，换来的是一件无法被比较、也无法被替换的东西。</p>
+  </div>
+</section>
+
+<!-- ============ 08 空间 ============ -->
+<section id="space" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">08</div>
+    <div>
+      <h2>岛：一个<em>不需要经营</em>的空间</h2>
+      <p class="sec-sub">参考《集合啦！动物森友会》的空间感，去掉它的经济系统。</p>
+    </div>
+  </div>
+
+  <p class="body">岛是宠物生活的地方，也是用户每天愿意打开一次的理由。动森的可借鉴之处在于它的空间尺度与节奏：地图小、移动慢、没有任务倒计时。不可借鉴之处在于它的经济系统，摘果子、卖大头菜、还房贷，这套循环把放松重新变成了工作。本设计的岛没有货币、没有等级、没有排行榜，也没有可交易的道具。</p>
+
+  <div class="cols">
+    <div>
+      <h3><span class="num">8.1</span>三个区域</h3>
+      <ul class="plain">
+        <li><b>巢</b>　宠物睡觉的地方。孵化后最初两天它不会离开，用户只能看。</li>
+        <li><b>坡</b>　一片缓坡，宠物在这里走动与停留。用户的握持习惯会影响它走路的节奏。</li>
+        <li><b>滩</b>　岛的边缘。宠物在这里面向海，此时不响应任何操作。</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="num">8.2</span>四条边界</h3>
+      <ul class="plain">
+        <li><b>每日十二分钟</b>　超过后岛上起雾，宠物回去睡觉，不做挽留。</li>
+        <li><b>不能投喂与装饰</b>　没有可购买的物品，避免把关系变成养成数值。</li>
+        <li><b>不能拜访他人</b>　首版不开放社交。比较会让疗愈失效。</li>
+        <li><b>不能重来</b>　一人一只。删除即永久删除，需二次确认。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 回流 ============ -->
+<section id="print" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">09</div>
+    <div>
+      <h2>从屏幕<em>回到桌面</em></h2>
+      <p class="sec-sub">数字关系需要一个可以被放在桌上的终点。</p>
+    </div>
+  </div>
+
+  <p class="body">孵化完成后的第三十天，用户会收到一次打印邀请。把岛上那只宠物做成实体，材料为光敏树脂或陶土，尺寸控制在 60mm 以内，底座刻一枚编号与孵化日期。打印由系统自动排产，用户只决定要不要，不决定颜色与姿态。姿态取自这一个月里它最常出现的那一个动作。</p>
+
+  <p class="body">这一层不只是周边的售卖，它承担一个设计上的收尾：屏幕里的东西会随着应用停止更新而消失，桌上的东西不会。一件被寄到手里的物件，把这段关系从服务里取了出来，交还给物本身。</p>
+</section>
+
+<!-- ============ 10 流程 ============ -->
+<section id="journey" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">10</div>
+    <div>
+      <h2>完整<em>使用流程</em></h2>
+      <p class="sec-sub">从拆箱到收到实体，前后四十天。</p>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th style="width:18%">时间</th><th style="width:34%">用户</th><th>系统</th></tr></thead>
+    <tbody>
+      <tr><td>第 0 天</td><td>拆箱，把蛋放在桌上或包里</td><td>配对完成，不要求注册完整资料</td></tr>
+      <tr><td>第 1 至 6 天</td><td>想捏就捏，不想就不碰</td><td>静默记录，只在两次时刻给出回应</td></tr>
+      <tr><td>第 7 天</td><td>下一次拿起时发现壳裂了</td><td>展示形象，引导进入岛屿</td></tr>
+      <tr><td>第 8 至 30 天</td><td>每天打开一次，看它在做什么</td><td>每日十二分钟上限，超时起雾</td></tr>
+      <tr><td>第 30 天</td><td>收到打印邀请，选择要或不要</td><td>排产、打印、编号、寄出</td></tr>
+      <tr><td>之后</td><td>实体在桌上，应用可以停用</td><td>停止采集，保留只读档案</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 11 验证 ============ -->
+<section id="eval" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">11</div>
+    <div>
+      <h2>怎么<em>验证</em></h2>
+      <p class="sec-sub">不做疗效声称，只检验三件可以被测量的事。</p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:26%">假设</th><th style="width:28%">方法</th><th>指标</th></tr></thead>
+    <tbody>
+      <tr><td>身体输入可以替代自述</td><td>同一批被试先填写情绪日记三天，再用蛋三天，比较完成率与耗时</td><td>日均使用次数、首次使用到放弃的间隔</td></tr>
+      <tr><td>七天足以形成依恋</td><td>十二名被试，七日孵化，前后测对照</td><td>PANAS 正负情感、UCLA 孤独量表、是否主动命名</td></tr>
+      <tr><td>形象与体验相关</td><td>孵化后请被试描述宠物，与后台参数做对照</td><td>描述与参数的一致项数量、主观吻合度评分</td></tr>
+    </tbody>
+  </table>
+
+  <p class="body">样本十二人，年龄 22 至 32 岁，覆盖在校与在职两类。前测在孵化前一天完成，后测在第七天与第三十天各一次。访谈采用半结构，重点问三个问题：这七天里你有没有想过它；你怎么向别人介绍它；如果明天它消失了，你会做什么。</p>
+</section>
+
+<!-- ============ 12 伦理 ============ -->
+<section id="ethic" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">12</div>
+    <div>
+      <h2>边界与<em>伦理</em></h2>
+      <p class="sec-sub">这条线必须写在产品里，而不只写在论文里。</p>
+    </div>
+  </div>
+  <ul class="plain">
+    <li><b>不做诊断。</b>全线不出现"焦虑""抑郁""压力值"等词。判定结果只用于选择形态，不呈现给用户，也不导出。</li>
+    <li><b>数据最小化。</b>原始波形不上传，只在设备内保留七天，之后只留特征值。用户可一键清空。</li>
+    <li><b>不替代人际。</b>宠物不模拟对话，不给建议，不表现依赖。它只做自己的事，用户看着就好。</li>
+    <li><b>防沉溺。</b>每日时长上限写死在客户端，用户不能自行关闭。超时后宠物回巢，不做任何挽留性设计。</li>
+    <li><b>不可比较。</b>首版不开放社交与排行。一旦可以比较，疗愈就变成了绩效。</li>
+  </ul>
+</section>
+
+<!-- ============ 13 文献 ============ -->
+<section id="refs" class="container reveal">
+  <div class="sec-head">
+    <div class="sec-no">13</div>
+    <div>
+      <h2>参考<em>文献</em></h2>
+    </div>
+  </div>
+  <ol class="refs-list">
+    <li>Norman, D. A. <i>Emotional Design: Why We Love (or Hate) Everyday Things</i>. Basic Books, 2004.</li>
+    <li>Bowlby, J. <i>Attachment and Loss, Vol. 1: Attachment</i>. Basic Books, 1969.</li>
+    <li>Reeves, B., &amp; Nass, C. <i>The Media Equation: How People Treat Computers, Television, and New Media Like Real People</i>. Cambridge University Press, 1996.</li>
+    <li>Turkle, S. <i>Alone Together: Why We Expect More from Technology and Less from Each Other</i>. Basic Books, 2011.</li>
+    <li>Hallnäs, L., &amp; Redström, J. Slow Technology: Designing for Reflection. <i>Personal and Ubiquitous Computing</i>, 5(3), 201–212, 2001.</li>
+    <li>Dourish, P. <i>Where the Action Is: The Foundations of Embodied Interaction</i>. MIT Press, 2001.</li>
+    <li>Hassenzahl, M. <i>Experience Design: Technology for All the Right Reasons</i>. Morgan &amp; Claypool, 2010.</li>
+    <li>Picard, R. W. <i>Affective Computing</i>. MIT Press, 1997.</li>
+    <li>Zajonc, R. B. Attitudinal Effects of Mere Exposure. <i>Journal of Personality and Social Psychology</i>, 9(2), 1–27, 1968.</li>
+    <li>Oldenburg, R. <i>The Great Good Place</i>. Paragon House, 1989.</li>
+    <li>Fogg, B. J. <i>Persuasive Technology: Using Computers to Change What We Think and Do</i>. Morgan Kaufmann, 2003.</li>
+    <li>Pine, B. J., &amp; Gilmore, J. H. <i>The Experience Economy</i>. Harvard Business School Press, 1999.</li>
+    <li>World Health Organization. <i>International Classification of Diseases, 11th Revision</i>, QD85 Burnout, 2019.</li>
+  </ol>
+</section>
+
+<footer class="container">
+  <span>基于 AI 的疗愈数字设计</span>
+  <span>2026 · 毕业设计提案</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  const links=[...document.querySelectorAll('nav a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  const onScroll=()=>{
+    const y=window.scrollY+160; let idx=-1;
+    secs.forEach((s,i)=>{ if(s && s.offsetTop<=y) idx=i; });
+    links.forEach((a,i)=>a.classList.toggle('on', i===idx));
+  };
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+</script>
+</body>
+</html>
